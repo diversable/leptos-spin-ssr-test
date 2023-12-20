@@ -39,8 +39,14 @@ fn HomePage() -> impl IntoView {
     };
 
     view! {
-        <h1>"Welcome to Leptos - served from Spin!"</h1>
-        <button on:click=on_click>"Click Me: " {count}</button>
+        <div>
+            <picture>
+                <source srcset="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_pref_dark_RGB.svg" media="(prefers-color-scheme: dark)" />
+                <img src="https://raw.githubusercontent.com/leptos-rs/leptos/main/docs/logos/Leptos_logo_RGB.svg" alt="Leptos Logo" height="200" width="400"/>
+            </picture>
+            <h1>"Welcome to Leptos - served from Spin!"</h1>
+            <button on:click=on_click>"Click Me: " {count}</button>
+        </div>
     }
 }
 
@@ -70,6 +76,8 @@ fn NotFound() -> impl IntoView {
 pub async fn save_count(count: u32) -> Result<(), ServerFnError> {
     println!("Saving value {count}");
     let store = spin_sdk::key_value::Store::open_default()?;
-    store.set_json("leptos_test_count", &count).map_err(|e| ServerFnError::ServerError(e.to_string()))?;
+    store
+        .set_json("leptos_test_count", &count)
+        .map_err(|e| ServerFnError::ServerError(e.to_string()))?;
     Ok(())
 }
